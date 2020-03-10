@@ -16,7 +16,8 @@
     "axios": "^0.18.1",
     "firebase": "^7.10.0",
     "firesql": "^2.0.2",
-    "quasar": "^1.9.8"
+    "quasar": "^1.9.8",
+    "vuexfire": "^3.2.1"
   },
   "devDependencies": {
     "@quasar/app": "^1.0.0",

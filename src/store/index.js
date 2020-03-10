@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { vuexfireMutations } from 'vuexfire'
 
 import disciplinas from './disciplinas'
 
@@ -18,6 +19,9 @@ export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
       disciplinas
+    },
+    mutations: {
+      ...vuexfireMutations
     },
 
     // enable strict mode (adds overhead!)
