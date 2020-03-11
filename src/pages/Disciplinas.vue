@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data () {
@@ -42,6 +42,9 @@ export default {
       itensFiltrados: {},
       busca: ''
     }
+  },
+  computed: {
+    ...mapGetters('disciplinas', ['disciplinas'])
   },
   methods: {
     localizar () {
@@ -68,6 +71,16 @@ export default {
   },
   mounted () {
     this.getDisciplinas()
+    this.itens = this.disciplinas.map(doc => {
+      const data = doc.data()
+      const id = doc.id
+      return { id, ...data }
+    })
+    this.itensFiltrados = this.getDisciplinas
+    console.log(this.itens)
+
+    // console.log(this.disciplinas)
+
     // this.$auth.onAuthStateChanged((user) => {
     // if (user) {
     // this.$dbfs.collection(`users/${this.$auth.currentUser.uid}/cadastros`)

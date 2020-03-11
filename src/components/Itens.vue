@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   data () {
     return {
@@ -60,26 +61,28 @@ export default {
         })
         this.itensFiltrados = items
       }
-    }
+    },
+    ...mapActions('disciplinas', ['getDisciplinas'])
   },
   beforeCreate () {
-    this.$auth.onAuthStateChanged((user) => {
-      if (user) {
-        this.$dbfs.collection(`users/${this.$auth.currentUser.uid}/cadastros`)
-          .onSnapshot({ includeMetadataChanges: true }, (snap) => {
-            if (snap.empty) {
-              this.itens = null
-            } else {
-              this.itens = snap.docs.map(doc => {
-                const data = doc.data()
-                const id = doc.id
-                return { id, ...data }
-              })
-              this.itensFiltrados = this.itens
-            }
-          })
-      }
-    })
+    this.getDisciplinas()
+    // this.$auth.onAuthStateChanged((user) => {
+    //   if (user) {
+    //     this.$dbfs.collection(`users/${this.$auth.currentUser.uid}/cadastros`)
+    //       .onSnapshot({ includeMetadataChanges: true }, (snap) => {
+    //         if (snap.empty) {
+    //           this.itens = null
+    //         } else {
+    //           this.itens = snap.docs.map(doc => {
+    //             const data = doc.data()
+    //             const id = doc.id
+    //             return { id, ...data }
+    //           })
+    //           this.itensFiltrados = this.itens
+    //         }
+    //       })
+    //   }
+    // })
   }
 }
 </script>
