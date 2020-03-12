@@ -70,3 +70,5 @@ export default ({ app, router, Vue, store }) => {
     }
   })
 }
+
+export { DB, DBFS, AUTH, DBST, FIREBASE, FSQL }
