@@ -1,3 +1,3 @@
-export function setDisciplinas (state, val) {
-  state.disciplinas = val
-}
+// export function setDisciplinas (state, val) {
+//   state.disciplinas = val
+// }

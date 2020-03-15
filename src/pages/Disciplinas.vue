@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   data () {
@@ -44,7 +44,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('disciplinas', ['disciplinas'])
+    ...mapState('disciplinas', ['disciplinas'])
+    // ...mapGetters('disciplinas', ['disciplinas'])
   },
   methods: {
     localizar () {
@@ -67,17 +68,19 @@ export default {
       }
     },
 
-    ...mapActions('disciplinas', ['getDisciplinas'])
+    ...mapActions('disciplinas', ['setDisciplinas'])
   },
   mounted () {
-    this.getDisciplinas()
-    this.itens = this.disciplinas.map(doc => {
-      const data = doc.data()
-      const id = doc.id
-      return { id, ...data }
-    })
-    this.itensFiltrados = this.getDisciplinas
-    console.log(this.itens)
+    // this.$store.dispatch('setDisciplinas')
+    // console.log(this.disciplinas)
+
+    // this.itens = this.disciplinas.map(doc => {
+    //   const data = doc.data()
+    //   const id = doc.id
+    //   return { id, ...data }
+    // })
+    // this.itensFiltrados = this.getDisciplinas
+    // console.log(this.itens)
 
     // console.log(this.disciplinas)
 

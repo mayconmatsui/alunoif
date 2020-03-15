@@ -1,9 +1,29 @@
 import { DBFS } from '../../boot/firebase'
 import { firestoreAction } from 'vuexfire'
 
-export const getDisciplinas = firestoreAction(({ bindFirestoreRef }) => {
+export const setDisciplinas = firestoreAction(({ bindFirestoreRef }) => {
   return bindFirestoreRef('disciplinas', DBFS.collection('disciplinas'))
 })
+
+export const localizar = ({ state, dispatch }, busca) => {
+  if (busca === '') {
+    this.itens
+  } else {
+    const needle = (this.busca ? this.busca.toLowerCase() : '')
+    const lista = Object.values(this.itens)
+    const items = []
+    lista.map((a) => {
+      const b = Object.values(a)
+      const filtra = b.filter(
+        v => v.toString().toLowerCase().indexOf(needle) > -1
+      )
+      if (filtra.length > 0) {
+        items.push(a)
+      }
+    })
+    this.itensFiltrados = items
+  }
+}
 
 // export function getDisciplinas (t) {
 //   // setTimeout(() => {
