@@ -12,11 +12,7 @@
             <q-item-label>{{iten.nome}}</q-item-label>
             <q-item-label caption>{{iten.local}}</q-item-label>
             <q-item-label caption>{{professores[iten.professor]}}</q-item-label>
-          </q-item-section>
-
-          <q-item-section side top v-if="iten.tipo == 'Smartphone'">
-            <q-item-label caption>{{iten.modelocomercial}}</q-item-label>
-            <q-item-label caption>{{iten.modelo}}</q-item-label>
+            <q-item-label v-for="horario in mostrarHorarios(iten.horarios)" :key="horario.id" caption>{{horario}}</q-item-label>
           </q-item-section>
         </q-item>
 
@@ -38,7 +34,16 @@ import { mapActions, mapState, mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      busca: ''
+      busca: '',
+      diasSemana: {
+        0: 'Domingo',
+        1: 'Segunda',
+        2: 'Terça',
+        3: 'Quarta',
+        4: 'Quinta',
+        5: 'Sexta',
+        6: 'Sábado'
+      }
     }
   },
   computed: {
@@ -48,6 +53,12 @@ export default {
     // ...mapGetters('disciplinas', ['disciplinas'])
   },
   methods: {
+    mostrarHorarios (iten) {
+      const horario = Object.entries(iten).map((a) => {
+        return `${this.diasSemana[a[0]]} ${a[1].join(' ')}`
+      })
+      return horario
+    },
     ...mapActions('disciplinas', ['setDisciplinas', 'localizarDisciplinas']),
     ...mapActions('professores', ['setProfessores'])
   },
