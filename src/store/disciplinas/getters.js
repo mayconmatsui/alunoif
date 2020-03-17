@@ -1,3 +1,3 @@
-// export const disciplinas = state => {
-//   return state.disciplinas
-// }
+export const getDisciplinasFiltradas = state => {
+  return state.itensFiltrados
+}

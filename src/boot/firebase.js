@@ -30,7 +30,6 @@ const FIREBASE = firebase
 const FSQL = new FireSQL(DBFS)
 
 export default ({ app, router, Vue, store }) => {
-  console.log(Vue)
   AUTH.onAuthStateChanged(user => {
     // if (!user) {
     //   router.push({ path: '/auth' })

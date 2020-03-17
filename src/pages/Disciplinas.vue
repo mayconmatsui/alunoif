@@ -1,17 +1,17 @@
 <template>
   <q-page padding>
-    <q-input standout dense clearable v-model="busca" @input="localizar()" debounce="500" placeholder="Buscar" class="input-busca text-weight-medium q-mb-sm">
+    <q-input standout dense clearable v-model="busca" @input="localizarDisciplinas(busca)" debounce="500" placeholder="Buscar" class="input-busca text-weight-medium q-mb-sm">
       <template v-slot:prepend>
         <q-icon name="search" />
       </template>
     </q-input>
-    <q-list v-if="itensFiltrados.length > 0">
-      <div v-for="iten in itensFiltrados" :key="iten.id">
+    <q-list v-if="getDisciplinasFiltradas.length > 0">
+      <div v-for="iten in getDisciplinasFiltradas" :key="iten.id">
         <q-item :to="`/itens/${iten.id}`" >
           <q-item-section>
-            <q-item-label>{{iten.tipo}}</q-item-label>
-            <q-item-label caption>{{iten.marca}}</q-item-label>
-            <q-item-label caption>{{iten.categoria}}</q-item-label>
+            <q-item-label>{{iten.nome}}</q-item-label>
+            <q-item-label caption>{{iten.local}}</q-item-label>
+            <q-item-label caption>{{professores[iten.professor]}}</q-item-label>
           </q-item-section>
 
           <q-item-section side top v-if="iten.tipo == 'Smartphone'">
@@ -33,77 +33,28 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 
 export default {
   data () {
     return {
-      itens: {},
-      itensFiltrados: {},
       busca: ''
     }
   },
   computed: {
-    ...mapState('disciplinas', ['disciplinas'])
+    ...mapState('disciplinas', ['disciplinas']),
+    ...mapGetters({ professores: 'professores/getProfessores' }),
+    ...mapGetters('disciplinas', ['getDisciplinasFiltradas'])
     // ...mapGetters('disciplinas', ['disciplinas'])
   },
   methods: {
-    localizar () {
-      if (this.busca === '') {
-        this.itensFiltrados = this.itens
-      } else {
-        const needle = (this.busca ? this.busca.toLowerCase() : '')
-        const lista = Object.values(this.itens)
-        const items = []
-        lista.map((a) => {
-          const b = Object.values(a)
-          const filtra = b.filter(
-            v => v.toString().toLowerCase().indexOf(needle) > -1
-          )
-          if (filtra.length > 0) {
-            items.push(a)
-          }
-        })
-        this.itensFiltrados = items
-      }
-    },
-
-    ...mapActions('disciplinas', ['setDisciplinas'])
+    ...mapActions('disciplinas', ['setDisciplinas', 'localizarDisciplinas']),
+    ...mapActions('professores', ['setProfessores'])
   },
-  mounted () {
-    // this.$store.dispatch('setDisciplinas')
-    // console.log(this.disciplinas)
-
-    // this.itens = this.disciplinas.map(doc => {
-    //   const data = doc.data()
-    //   const id = doc.id
-    //   return { id, ...data }
-    // })
-    // this.itensFiltrados = this.getDisciplinas
-    // console.log(this.itens)
-
-    // console.log(this.disciplinas)
-
-    // this.$auth.onAuthStateChanged((user) => {
-    // if (user) {
-    // this.$dbfs.collection(`users/${this.$auth.currentUser.uid}/cadastros`)
-    // this.$dbfs.doc('users/GA95bpmEq0WFtJ0PoaeZgZAvyA92')
-    //   .onSnapshot({ includeMetadataChanges: true }, (snap) => {
-    //     console.log(snap.data().disciplinas)
-
-    //     // if (snap.empty) {
-    //     //   this.itens = null
-    //     // } else {
-    //     //   this.itens = snap.docs.map(doc => {
-    //     //     const data = doc.data()
-    //     //     const id = doc.id
-    //     //     return { id, ...data }
-    //     //   })
-    //     //   this.itensFiltrados = this.itens
-    //     // }
-    //   })
-    // }
-    // })
+  async mounted () {
+    await this.setProfessores()
+    await this.setDisciplinas()
+    await this.localizarDisciplinas(this.busca)
   }
 }
 </script>
