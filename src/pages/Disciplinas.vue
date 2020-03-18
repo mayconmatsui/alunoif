@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <q-input standout dense clearable v-model="busca" @input="localizarDisciplinas(busca)" debounce="500" placeholder="Buscar" class="input-busca text-weight-medium q-mb-sm">
+    <q-input standout dense clearable v-model="busca" @input="buscar()" debounce="500" placeholder="Buscar" class="input-busca text-weight-medium q-mb-sm">
       <template v-slot:prepend>
         <q-icon name="search" />
       </template>
@@ -59,13 +59,16 @@ export default {
       })
       return horario
     },
+    buscar () {
+      this.localizarDisciplinas(this.busca)
+    },
     ...mapActions('disciplinas', ['setDisciplinas', 'localizarDisciplinas']),
     ...mapActions('professores', ['setProfessores'])
   },
   async mounted () {
     await this.setProfessores()
     await this.setDisciplinas()
-    await this.localizarDisciplinas(this.busca)
+    await this.buscar()
   }
 }
 </script>
