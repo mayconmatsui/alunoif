@@ -24,7 +24,7 @@
         <q-item-section class="text-weight-medium text-grey-9 text-center">Nenhum cadastrado</q-item-section>
       </q-item>
     </q-list>
-    <q-btn round color="black" size="lg" icon="add" to='/itens/cadastro' class="fixed-bottom-right q-mb-lg q-mr-md animate-pulse-dark" />
+    <q-btn round color="black" size="lg" icon="add" to='/disciplinas/cadastro' class="fixed-bottom-right q-mb-lg q-mr-md animate-pulse-dark" />
   </q-page>
 </template>
 

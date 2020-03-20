@@ -5,3 +5,15 @@ export const getProfessores = state => {
   })
   return prof
 }
+
+export const getProfessoresSelect = state => {
+  const prof = []
+  state.professores.forEach((a) => {
+    const p = {
+      label: a.nome,
+      value: a.id
+    }
+    prof.push(p)
+  })
+  return prof
+}
