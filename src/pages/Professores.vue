@@ -5,8 +5,8 @@
         <q-icon name="search" />
       </template>
     </q-input>
-    <q-list v-if="professores.length > 0">
-      <div v-for="iten in professores" :key="iten.id">
+    <q-list v-if="professoresFiltrados.length > 0">
+      <div v-for="iten in professoresFiltrados" :key="iten.id">
         <q-item :to="`/itens/${iten.id}`" >
           <q-item-section>
             <q-item-label>{{iten.nome}}</q-item-label>
@@ -21,12 +21,12 @@
         <q-item-section class="text-weight-medium text-grey-9 text-center">Nenhum cadastrado</q-item-section>
       </q-item>
     </q-list>
-    <q-btn round color="black" size="lg" icon="add" to='/itens/cadastro' class="fixed-bottom-right q-mb-lg q-mr-md animate-pulse-dark" />
+    <q-btn round color="black" size="lg" icon="add" to='/professores/cadastro' class="fixed-bottom-right q-mb-lg q-mr-md animate-pulse-dark" />
   </q-page>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data () {
@@ -35,13 +35,13 @@ export default {
     }
   },
   computed: {
-    ...mapState('professores', ['professores'])
+    ...mapGetters('professores', { professoresFiltrados: 'getProfessoresFiltrados' })
   },
   methods: {
     buscar () {
-      // this.localizarProfessores(this.busca)
+      this.localizarProfessores(this.busca)
     },
-    ...mapActions('professores', ['setProfessores'])
+    ...mapActions('professores', ['setProfessores', 'localizarProfessores'])
   },
   async mounted () {
     await this.setProfessores()

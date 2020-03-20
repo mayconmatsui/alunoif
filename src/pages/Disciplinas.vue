@@ -48,7 +48,7 @@ export default {
   },
   computed: {
     ...mapState('disciplinas', ['disciplinas']),
-    ...mapGetters({ professores: 'professores/getProfessores' }),
+    ...mapGetters('professores', { professores: 'getProfessores' }),
     ...mapGetters('disciplinas', ['getDisciplinasFiltradas'])
     // ...mapGetters('disciplinas', ['disciplinas'])
   },

@@ -100,9 +100,9 @@
           </q-input>
         </div>
       </div>
-      <div class="row flex flex-center">
+      <div class="row flex flex-center q-mt-lg">
         <q-btn
-          color="black"
+          color="positive"
           type="submit"
           class="btn-fixed-width"
           label="Salvar"
@@ -220,3 +220,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.btn-fixed-width {
+  width: 98vw;
+}
+</style>

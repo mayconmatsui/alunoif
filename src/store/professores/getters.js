@@ -1,3 +1,7 @@
+export const getProfessoresFiltrados = state => {
+  return state.professoresFiltrados
+}
+
 export const getProfessores = state => {
   const prof = {}
   state.professores.forEach((a) => {
