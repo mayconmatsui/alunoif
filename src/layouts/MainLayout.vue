@@ -48,6 +48,7 @@
       </q-item>
 
       <q-item
+        to="/aulas"
         clickable
         v-ripple
         :active="link === 'outbox'"

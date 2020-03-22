@@ -7,3 +7,17 @@ export const getDisciplinaById = (state) => (id) => {
     return a.id === id
   })
 }
+
+export const getDisciplinasSelect = state => {
+  console.log(state.disciplinas)
+
+  const disc = []
+  state.disciplinas.forEach((a) => {
+    const d = {
+      label: a.nome,
+      value: a.id
+    }
+    disc.push(d)
+  })
+  return disc
+}

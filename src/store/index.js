@@ -4,6 +4,7 @@ import { vuexfireMutations } from 'vuexfire'
 
 import disciplinas from './disciplinas'
 import professores from './professores'
+import aulas from './aulas'
 
 Vue.use(Vuex)
 
@@ -20,7 +21,8 @@ export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
       disciplinas,
-      professores
+      professores,
+      aulas
     },
     mutations: {
       ...vuexfireMutations
