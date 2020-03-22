@@ -119,6 +119,7 @@ import _ from 'lodash'
 export default {
   data () {
     return {
+      id: this.$route.params.id ? this.$route.params.id : '',
       professor: '',
       nome: '',
       local: '',
@@ -189,7 +190,19 @@ export default {
         local: this.local,
         horarios: this.setHorarios(this.horarios)
       }
-      this.addDisciplina(dados)
+      if (this.id) {
+        dados.id = this.id
+        this.updateDisciplina(dados)
+      } else {
+        this.addDisciplina(dados)
+      }
+      this.$q.notify({
+        color: 'green-5',
+        textColor: 'white',
+        icon: 'done',
+        message: 'Registro salvo com sucesso!'
+      })
+      this.$router.push('/disciplinas')
     },
     setHorarios (h) {
       const horarios = {}
@@ -209,14 +222,50 @@ export default {
       })
       return horarios
     },
+    popuplaForm () {
+      const disciplina = this.disciplina(this.id)[0]
+      this.nome = disciplina.nome
+      this.local = disciplina.local
+      this.professor = this.getProfessorById(disciplina.professor)[0]
+      this.horarios = this.getHorarios(disciplina.horarios)
+    },
+    getProfessorById (id) {
+      return this.professores.filter((p) => {
+        return p.value === id
+      })
+    },
+    getHorarios (h) {
+      const horarios = []
+      Object.entries(h).map((a) => {
+        const aula = this.diasSemana.filter((b) => {
+          return b.value === Number(a[0])
+        })[0]
+
+        a[1].map((c) => {
+          const horas = c.split('|')
+          const t = {
+            aula: aula,
+            horaInicial: horas[0],
+            horaFinal: horas[1]
+          }
+          horarios.push(t)
+        })
+      })
+      return horarios
+    },
     ...mapActions('professores', ['setProfessores']),
-    ...mapActions('disciplinas', ['addDisciplina'])
+    ...mapActions('disciplinas', ['addDisciplina', 'updateDisciplina'])
   },
   computed: {
-    ...mapGetters({ professores: 'professores/getProfessoresSelect' })
+    ...mapGetters('professores', { professores: 'getProfessoresSelect' }),
+    ...mapGetters('disciplinas', { disciplina: 'getDisciplinaById' })
   },
   async mounted () {
     await this.setProfessores()
+    if (this.id) {
+      await this.popuplaForm()
+      await this.getProfessorById()
+    }
   }
 }
 </script>

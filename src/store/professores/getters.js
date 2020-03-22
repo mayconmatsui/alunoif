@@ -21,3 +21,9 @@ export const getProfessoresSelect = state => {
   })
   return prof
 }
+
+export const getProfessorById = (state) => (id) => {
+  return state.professores.filter((a) => {
+    return a.id === id
+  })
+}

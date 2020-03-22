@@ -31,10 +31,19 @@ export const localizarProfessores = ({ state, dispatch, commit }, busca) => {
 }
 
 export const addProfessor = firestoreAction((context, dados) => {
-  DBFS
-    .collection(
-      'professores'
-    )
+  DBFS.collection('professores')
     .doc()
     .set(dados)
+})
+
+export const updateProfessor = firestoreAction((context, dados) => {
+  DBFS.collection('professores')
+    .doc(dados.id)
+    .update(dados)
+})
+
+export const deleteProfessor = firestoreAction((context, id) => {
+  DBFS.collection('professores')
+    .doc(id)
+    .delete()
 })

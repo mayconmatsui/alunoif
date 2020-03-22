@@ -106,7 +106,9 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <transition name="fade">
+        <router-view />
+      </transition>
     </q-page-container>
   </q-layout>
 </template>
@@ -118,7 +120,7 @@ export default {
   data () {
     return {
       leftDrawerOpen: false,
-      link: 'inbox'
+      link: ''
     }
   }
 }

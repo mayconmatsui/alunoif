@@ -7,9 +7,26 @@
     </q-input>
     <q-list v-if="professoresFiltrados.length > 0">
       <div v-for="iten in professoresFiltrados" :key="iten.id">
-        <q-item :to="`/itens/${iten.id}`" >
+        <q-item>
           <q-item-section>
             <q-item-label>{{iten.nome}}</q-item-label>
+          </q-item-section>
+          <q-item-section side top>
+            <q-btn flat round color="black" icon="more_vert">
+              <q-menu
+                transition-show="jump-down"
+                transition-hide="jump-up"
+              >
+                <q-list>
+                  <q-item clickable v-close-popup :to="`/professores/${iten.id}/editar`" >
+                    <q-item-section>Editar</q-item-section>
+                  </q-item>
+                  <q-item clickable v-close-popup @click.native="deletarRegistro(iten.id)">
+                    <q-item-section>Exluir</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
           </q-item-section>
         </q-item>
 
@@ -21,7 +38,7 @@
         <q-item-section class="text-weight-medium text-grey-9 text-center">Nenhum cadastrado</q-item-section>
       </q-item>
     </q-list>
-    <q-btn round color="black" size="lg" icon="add" to='/professores/cadastro' class="fixed-bottom-right q-mb-lg q-mr-md animate-pulse-dark" />
+    <q-btn round color="black" size="lg" icon="add" to='/professores/cadastrar' class="fixed-bottom-right q-mb-lg q-mr-md animate-pulse-dark" />
   </q-page>
 </template>
 
@@ -41,7 +58,23 @@ export default {
     buscar () {
       this.localizarProfessores(this.busca)
     },
-    ...mapActions('professores', ['setProfessores', 'localizarProfessores'])
+    deletarRegistro (id) {
+      this.$q.dialog({
+        title: 'Confirmar',
+        message: 'Deseja deletar o registro.',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        this.$q.notify({
+          color: 'green-5',
+          textColor: 'white',
+          icon: 'done',
+          message: 'Registro deletado com sucesso!.'
+        })
+        this.deleteProfessor(id)
+      })
+    },
+    ...mapActions('professores', ['setProfessores', 'deleteProfessor', 'localizarProfessores'])
   },
   async mounted () {
     await this.setProfessores()

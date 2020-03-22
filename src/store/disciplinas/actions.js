@@ -30,10 +30,19 @@ export const localizarDisciplinas = ({ state, dispatch, commit }, busca) => {
 }
 
 export const addDisciplina = firestoreAction((context, dados) => {
-  DBFS
-    .collection(
-      'disciplinas'
-    )
+  DBFS.collection('disciplinas')
     .doc()
     .set(dados)
+})
+
+export const updateDisciplina = firestoreAction((context, dados) => {
+  DBFS.collection('disciplinas')
+    .doc(dados.id)
+    .update(dados)
+})
+
+export const deleteDisciplina = firestoreAction((context, id) => {
+  DBFS.collection('disciplinas')
+    .doc(id)
+    .delete()
 })

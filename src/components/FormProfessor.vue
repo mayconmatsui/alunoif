@@ -22,22 +22,44 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data () {
     return {
+      id: this.$route.params.id ? this.$route.params.id : '',
       nome: ''
     }
   },
   methods: {
     salvarRegistro () {
-      const dados = {
-        nome: this.nome
+      if (this.id) {
+        this.updateProfessor({
+          id: this.id,
+          nome: this.nome
+        })
+      } else {
+        this.addProfessor({
+          nome: this.nome
+        })
       }
-      this.addProfessor(dados)
+      this.$q.notify({
+        color: 'green-5',
+        textColor: 'white',
+        icon: 'done',
+        message: 'Registro salvo com sucesso!'
+      })
+      this.$router.push('/professores')
     },
-    ...mapActions('professores', ['addProfessor'])
+    ...mapActions('professores', ['addProfessor', 'updateProfessor', 'setProfessores'])
+  },
+  computed: {
+    ...mapGetters('professores', ['getProfessorById'])
+  },
+  async mounted () {
+    if (this.id) {
+      this.nome = await this.getProfessorById(this.id)[0].nome
+    }
   }
 }
 </script>
