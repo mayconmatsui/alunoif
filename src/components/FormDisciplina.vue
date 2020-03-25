@@ -100,7 +100,7 @@
           </q-input>
         </div>
       </div>
-      <div class="row flex flex-center q-mt-lg">
+      <div class="row flex flex-center q-my-lg">
         <q-btn
           color="positive"
           type="submit"

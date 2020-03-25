@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header :elevated="elevated" >
       <q-toolbar class="bg-positive">
         <q-btn
           flat
@@ -32,6 +32,21 @@
         <div class="absolute text-white" style="top: 100px; left: 15px">@rstoenescu</div>
       </div>
       <q-list padding class="text-grey-10">
+      <q-item
+        to="/"
+        clickable
+        v-ripple
+        :active="link === 'home'"
+        @click="link = 'home'"
+        active-class="my-menu-link"
+      >
+        <q-item-section avatar>
+          <q-icon name="local_library" />
+        </q-item-section>
+
+        <q-item-section>Aulas</q-item-section>
+      </q-item>
+
       <q-item
         to="/disciplinas"
         clickable
@@ -121,17 +136,20 @@ export default {
   data () {
     return {
       leftDrawerOpen: false,
-      link: ''
+      link: 'home'
     }
+  },
+  computed: {
+    elevated: vm => vm.$route.path !== '/'
   }
 }
 </script>
 
 <style>
-.my-menu-link {
+.q-item.q-item-type.row.no-wrap.q-router-link--exact-active.my-menu-link.q-item--clickable.q-link.cursor-pointer.q-focusable.q-hoverable.q-item--active {
   color: white!important;
-  font-weight: bold;
-  background: #21BA45
+  font-weight: bold!important;
+  background: #21BA45!important
 }
 
 .q-img__content > div {

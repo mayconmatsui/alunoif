@@ -1,49 +1,27 @@
 import { DBFS } from '../../boot/firebase'
 import { firestoreAction } from 'vuexfire'
+import moment from 'moment'
 
-export const setProfessores = firestoreAction(({ bindFirestoreRef }) => {
-  return bindFirestoreRef('professores', DBFS.collection('professores'))
+export const setAulas = firestoreAction(({ bindFirestoreRef }) => {
+  return bindFirestoreRef('aulas', DBFS.collection('aulas'))
 })
 
-export const localizarProfessores = ({ state, dispatch, commit }, busca) => {
-  if (busca === '') {
-    commit('setItensFiltrados', state.professores)
-  } else {
-    const needle = busca ? busca.toLowerCase() : ''
-    const lista = Object.values(state.professores)
-    const items = []
-    lista.map(a => {
-      const b = Object.values(a)
-
-      const filtra = b.filter(
-        v =>
-          v
-            .toString()
-            .toLowerCase()
-            .indexOf(needle) > -1
-      )
-      if (filtra.length > 0) {
-        items.push(a)
-      }
-    })
-    commit('setItensFiltrados', items)
-  }
-}
-
-export const addProfessor = firestoreAction((context, dados) => {
-  DBFS.collection('professores')
-    .doc()
-    .set(dados)
+export const setAulasWeek = firestoreAction(({ bindFirestoreRef }, today) => {
+  const seg = moment().startOf('week').add(1, 'days').format('DD/MM/YYYY')
+  const sab = moment().startOf('week').add(6, 'days').format('DD/MM/YYYY')
+  return bindFirestoreRef('aulasIndex', DBFS.collection('aulas').where('data', '>=', seg).where('data', '<=', sab))
 })
 
-export const updateProfessor = firestoreAction((context, dados) => {
-  DBFS.collection('professores')
-    .doc(dados.id)
-    .update(dados)
+export const addAula = firestoreAction((context, dados) => {
+  const nomeDoc = Object.values(dados)[0].data.replace(/\//g, '-')
+
+  DBFS.collection('aulas')
+    .doc(nomeDoc)
+    .set(dados, { merge: true })
 })
 
-export const deleteProfessor = firestoreAction((context, id) => {
-  DBFS.collection('professores')
+export const deleteAula = firestoreAction((context, id) => {
+  DBFS.collection('aulas')
     .doc(id)
     .delete()
 })

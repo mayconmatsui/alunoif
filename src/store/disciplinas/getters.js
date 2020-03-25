@@ -9,8 +9,6 @@ export const getDisciplinaById = (state) => (id) => {
 }
 
 export const getDisciplinasSelect = state => {
-  console.log(state.disciplinas)
-
   const disc = []
   state.disciplinas.forEach((a) => {
     const d = {

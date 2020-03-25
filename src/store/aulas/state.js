@@ -1,6 +1,6 @@
 export default function () {
   return {
-    professores: [],
-    professoresFiltrados: []
+    aulas: [],
+    aulasIndex: []
   }
 }

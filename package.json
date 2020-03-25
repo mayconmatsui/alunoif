@@ -12,12 +12,13 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "@quasar/extras": "^1.0.0",
+    "@quasar/extras": "^1.6.0",
     "axios": "^0.18.1",
     "firebase": "^7.10.0",
     "firesql": "^2.0.2",
     "lodash": "^4.17.15",
-    "quasar": "^1.9.8",
+    "moment": "^2.24.0",
+    "quasar": "^1.9.10",
     "vuexfire": "^3.2.1"
   },
   "devDependencies": {

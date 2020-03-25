@@ -5,11 +5,14 @@
         <q-icon name="search" />
       </template>
     </q-input>
-    <q-list v-if="professoresFiltrados.length > 0">
-      <div v-for="iten in professoresFiltrados" :key="iten.id">
+    <q-list v-if="aulasFiltradas.length > 0">
+      <div v-for="iten in aulasFiltradas" :key="iten.id">
         <q-item>
           <q-item-section>
             <q-item-label>{{iten.nome}}</q-item-label>
+            <q-item-label caption>{{iten.local}}</q-item-label>
+            <q-item-label caption>{{iten.data}}</q-item-label>
+            <q-item-label caption>{{mostrarHorarios(iten.horarios)}}</q-item-label>
           </q-item-section>
           <q-item-section side top>
             <q-btn flat round color="black" icon="more_vert">
@@ -48,15 +51,39 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      busca: ''
+      busca: '',
+      aulasFiltradas: ''
     }
   },
   computed: {
-    ...mapGetters('professores', { professoresFiltrados: 'getProfessoresFiltrados' })
+    ...mapGetters('aulas', { aulas: 'getAulas' })
   },
   methods: {
     buscar () {
-      this.localizarProfessores(this.busca)
+      if (this.busca === '') {
+        this.aulasFiltradas = this.aulas
+      } else {
+        const needle = this.busca ? this.busca.toLowerCase() : ''
+        const lista = Object.values(this.aulas)
+        const items = []
+        lista.map(a => {
+          const b = Object.values(a)
+          const filtra = b.filter(
+            v =>
+              v
+                .toString()
+                .toLowerCase()
+                .indexOf(needle) > -1
+          )
+          if (filtra.length > 0) {
+            items.push(a)
+          }
+        })
+        this.aulasFiltradas = items
+      }
+    },
+    mostrarHorarios (iten) {
+      return iten.join(' ')
     },
     deletarRegistro (id) {
       this.$q.dialog({
@@ -74,10 +101,10 @@ export default {
         this.deleteProfessor(id)
       })
     },
-    ...mapActions('professores', ['setProfessores', 'deleteProfessor', 'localizarProfessores'])
+    ...mapActions('aulas', ['setAulas'])
   },
   async mounted () {
-    await this.setProfessores()
+    await this.setAulas()
     await this.buscar()
   }
 }
