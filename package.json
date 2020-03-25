@@ -18,7 +18,7 @@
     "firesql": "^2.0.2",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
-    "quasar": "^1.9.10",
+    "quasar": "^1.9.11",
     "vuexfire": "^3.2.1"
   },
   "devDependencies": {

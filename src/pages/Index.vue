@@ -4,7 +4,7 @@
       v-model="tab"
       class="bg-positive text-white shadow-5"
       dense
-      @input="loadTab()"
+      @input="getItensTab()"
     >
       <q-tab name="seg" label="Seg" />
       <q-tab name="ter" label="Ter" />
@@ -13,35 +13,74 @@
       <q-tab name="sex" label="Sex" />
       <q-tab name="sab" label="Sáb" />
     </q-tabs>
-    <q-tab-panels v-model="tab" animated class="q-mt-sm">
-      <q-tab-panel :name="tabSelected" class="q-pa-sm">
+    <q-tab-panels
+      v-model="tab"
+      animated
+      transition-prev="slide-right"
+      transition-next="slide-left"
+      class="q-mt-sm"
+    >
+      <q-tab-panel
+      v-for="day in week"
+      :key="day.id"
+      :name="nameTab"
+      class="q-pa-sm">
         <div class="row q-col-gutter-sm">
-          <div class="col-xs-12 col-sm-6 col-lg-3" v-for="n in 5" :key="`xs-${n}`">
+          <div
+            class="col-xs-12 col-sm-6 col-lg-3"
+          >
             <q-card class="my-card">
-              <q-card-section class='text-white q-py-sm' :class='getBackgroundColor()'>
-                <div class="text-subtitle2">Linguagem de Programação 3</div>
+              <q-card-section
+                class="text-white q-py-sm"
+                :class="getBackgroundColor()"
+              >
+                <div class="text-subtitle2">{{ aula.nome }}</div>
               </q-card-section>
 
               <q-separator />
 
               <q-card-section>
                 <div class="row items-center">
-                  <div class="col-8 text-grey-9 text-caption text-weight-medium no-wrap items-center">
-                    <q-icon size="15px" name="query_builder" class="q-mr-sm text-weight-medium"/>
+                  <div
+                    class="col-8 text-grey-9 text-caption text-weight-medium no-wrap items-center"
+                  >
+                    <q-icon
+                      size="15px"
+                      name="query_builder"
+                      class="q-mr-sm text-weight-medium"
+                    />
                     18:50 - 19:35
                   </div>
-                  <div class="col-4 text-grey-9 text-caption text-weight-medium no-wrap items-center">
-                    <q-icon size="15px" name="location_on" class="q-mr-sm text-weight-medium"/>
+                  <div
+                    class="col-4 text-grey-9 text-caption text-weight-medium no-wrap items-center"
+                  >
+                    <q-icon
+                      size="15px"
+                      name="location_on"
+                      class="q-mr-sm text-weight-medium"
+                    />
                     LAB 1
                   </div>
                 </div>
                 <div class="row no-wrap items-center">
-                  <div class="col-8 text-grey-9 text-caption text-weight-medium no-wrap items-center">
-                    <q-icon size="15px" name="query_builder" class="q-mr-sm text-weight-medium"/>
+                  <div
+                    class="col-8 text-grey-9 text-caption text-weight-medium no-wrap items-center"
+                  >
+                    <q-icon
+                      size="15px"
+                      name="query_builder"
+                      class="q-mr-sm text-weight-medium"
+                    />
                     18:50 - 19:35
                   </div>
-                  <div class="col-4 text-grey-9 text-caption text-weight-medium no-wrap items-center">
-                    <q-icon size="15px" name="location_on" class="q-mr-sm text-weight-medium"/>
+                  <div
+                    class="col-4 text-grey-9 text-caption text-weight-medium no-wrap items-center"
+                  >
+                    <q-icon
+                      size="15px"
+                      name="location_on"
+                      class="q-mr-sm text-weight-medium"
+                    />
                     LAB 1
                   </div>
                 </div>
@@ -51,7 +90,7 @@
 
               <q-card-section class="row text-center q-py-sm">
                 <div class="text-caption text-weight-medium col-12">
-                  Jean Carlo Wai Keung Ma
+                  {{ aula.professor }}
                 </div>
               </q-card-section>
             </q-card>
@@ -72,7 +111,7 @@ export default {
   data () {
     return {
       tab: '',
-      tabSelected: '',
+      nameTab: '',
       colors: [
         'bg-positive',
         'bg-accent',
@@ -89,16 +128,19 @@ export default {
         4: 'qui',
         5: 'sex',
         6: 'sab'
-      }
+      },
+      week: []
     }
   },
   methods: {
-    loadTab () {
-      console.log(this.getAulasIndex)
-    },
     setTabDay () {
       const today = moment().day()
       this.tab = this.daysWeek[today]
+      this.nameTab = this.tab
+    },
+    async getItensTab () {
+      this.nameTab = this.tab
+      this.aulas = this.aulasTab
     },
     getBackgroundColor () {
       return _.sample(this.colors)
@@ -108,14 +150,14 @@ export default {
     ...mapActions('disciplinas', ['setDisciplinas'])
   },
   computed: {
-    ...mapGetters('aulas', ['getAulasThisTab'])
+    ...mapGetters('aulas', { aulasTab: 'getAulasWeek' })
   },
   async mounted () {
     await this.setTabDay()
     await this.setDisciplinas()
     await this.setProfessores()
     await this.setAulasWeek()
-    await this.loadTab()
+    await this.getItensTab()
   }
 }
 </script>

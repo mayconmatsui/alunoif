@@ -9,7 +9,7 @@ export const setAulas = firestoreAction(({ bindFirestoreRef }) => {
 export const setAulasWeek = firestoreAction(({ bindFirestoreRef }, today) => {
   const seg = moment().startOf('week').add(1, 'days').format('DD/MM/YYYY')
   const sab = moment().startOf('week').add(6, 'days').format('DD/MM/YYYY')
-  return bindFirestoreRef('aulasIndex', DBFS.collection('aulas').where('data', '>=', seg).where('data', '<=', sab))
+  return bindFirestoreRef('aulasWeek', DBFS.collection('aulas').where('data', '>=', seg).where('data', '<=', sab))
 })
 
 export const addAula = firestoreAction((context, dados) => {
