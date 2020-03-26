@@ -146,7 +146,6 @@ export default {
       return _.sample(this.colors)
     },
     ...mapActions('aulas', ['setAulasWeek']),
-    ...mapActions('professores', ['setProfessores']),
     ...mapActions('disciplinas', ['setDisciplinas'])
   },
   computed: {
@@ -155,7 +154,6 @@ export default {
   async mounted () {
     await this.setTabDay()
     await this.setDisciplinas()
-    await this.setProfessores()
     await this.setAulasWeek()
     await this.getItensTab()
   }

@@ -20,13 +20,6 @@
         @filter="filtrarProfessor"
         :rules="[val => !!val || 'Professor deve ser Selecionado']"
       />
-      <q-input
-        v-model="local"
-        color="black"
-        clearable
-        label="Local"
-        :rules="[val => !!val || 'Local deve ser informado']"
-      />
       <div class="text-subtitle2 q-my-lg text-grey-9">
         Dias de aula
         <q-btn
@@ -39,11 +32,13 @@
           @click="addCampoAula()"
         />
       </div>
-      <div class="row q-col-gutter-xs">
-        <div class="col-6">
+      <div class="row q-col-gutter-xs q-px-sm rounded-borders"
+        v-for="(aula, index) in horarios"
+        :key="index"
+        :class="getBackground(index)"
+      >
+        <div class="col-5">
           <q-select
-            v-for="(aula, index) in horarios"
-            :key="index"
             class="q-mb-xs"
             style="margin-bottom: 0"
             v-model="aula.aula"
@@ -53,10 +48,17 @@
             :rules="[val => !!val || 'Dia deve ser Selecionado']"
           />
         </div>
-        <div class="col-3">
+        <div class="col-7">
           <q-input
-            v-for="(aula, index) in horarios"
-            :key="index"
+            v-model="aula.local"
+            color="black"
+            clearable
+            label="Local"
+            :rules="[val => !!val || 'Local deve ser informado']"
+          />
+        </div>
+        <div class="col-6">
+          <q-input
             color="black"
             v-model="aula.horaInicial"
             mask="time"
@@ -76,10 +78,8 @@
             </template>
           </q-input>
         </div>
-        <div class="col-3">
+        <div class="col-6">
           <q-input
-            v-for="(aula, index) in horarios"
-            :key="index"
             color="black"
             v-model="aula.horaFinal"
             mask="time"
@@ -122,12 +122,12 @@ export default {
       id: this.$route.params.id ? this.$route.params.id : '',
       professor: '',
       nome: '',
-      local: '',
       horarios: [
         {
           aula: '',
           horaInicial: '',
-          horaFinal: ''
+          horaFinal: '',
+          local: ''
         }
       ],
       listProfessores: this.professores,
@@ -164,6 +164,9 @@ export default {
     }
   },
   methods: {
+    getBackground (index) {
+      return { 'bg-green-1': index % 2 === 1 }
+    },
     filtrarProfessor (val, update) {
       update(() => {
         if (val === '') {
@@ -180,16 +183,17 @@ export default {
       this.horarios.push({
         aula: '',
         horaInicial: '',
-        horaFinal: ''
+        horaFinal: '',
+        local: ''
       })
     },
-    salvarRegistro () {
+    async salvarRegistro () {
       const dados = {
         nome: this.nome,
-        professor: this.professor.value,
-        local: this.local,
+        professor: this.$dbfs.doc(`professores/${this.professor.value}`),
         horarios: this.setHorarios(this.horarios)
       }
+
       if (this.id) {
         dados.id = this.id
         this.updateDisciplina(dados)
@@ -215,7 +219,11 @@ export default {
         _.mergeWith(
           horarios,
           {
-            [a.aula.value]: [`${a.horaInicial}|${a.horaFinal}`]
+            [a.aula.value]: [{
+              horaInicial: a.horaInicial,
+              horaFinal: a.horaFinal,
+              local: a.local
+            }]
           },
           customizer
         )
@@ -226,7 +234,7 @@ export default {
       const disciplina = this.disciplina(this.id)[0]
       this.nome = disciplina.nome
       this.local = disciplina.local
-      this.professor = this.getProfessorById(disciplina.professor)[0]
+      this.professor = this.getProfessorById(disciplina.professor.id)[0]
       this.horarios = this.getHorarios(disciplina.horarios)
     },
     getProfessorById (id) {
@@ -242,11 +250,11 @@ export default {
         })[0]
 
         a[1].map((c) => {
-          const horas = c.split('|')
           const t = {
             aula: aula,
-            horaInicial: horas[0],
-            horaFinal: horas[1]
+            horaInicial: c.horaInicial,
+            horaFinal: c.horaFinal,
+            local: c.local
           }
           horarios.push(t)
         })
@@ -254,17 +262,17 @@ export default {
       return horarios
     },
     ...mapActions('professores', ['setProfessores']),
-    ...mapActions('disciplinas', ['addDisciplina', 'updateDisciplina'])
+    ...mapActions('disciplinas', ['setDisciplinas', 'addDisciplina', 'updateDisciplina'])
   },
   computed: {
     ...mapGetters('professores', { professores: 'getProfessoresSelect' }),
     ...mapGetters('disciplinas', { disciplina: 'getDisciplinaById' })
   },
   async mounted () {
+    await this.setDisciplinas()
     await this.setProfessores()
     if (this.id) {
       await this.popuplaForm()
-      await this.getProfessorById()
     }
   }
 }

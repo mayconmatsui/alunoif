@@ -11,7 +11,7 @@
           <q-item-section>
             <q-item-label>{{iten.nome}}</q-item-label>
             <q-item-label caption>{{iten.local}}</q-item-label>
-            <q-item-label caption>{{professores[iten.professor]}}</q-item-label>
+            <q-item-label caption>{{iten.professor.nome}}</q-item-label>
             <q-item-label v-for="horario in mostrarHorarios(iten.horarios)" :key="horario.id" caption>{{horario}}</q-item-label>
           </q-item-section>
           <q-item-section side top>
@@ -72,7 +72,10 @@ export default {
   methods: {
     mostrarHorarios (iten) {
       const horario = Object.entries(iten).map((a) => {
-        return `${this.diasSemana[a[0]]} ${a[1].join(' ')}`
+        const horarios = a[1].map((b) => {
+          return `${b.horaInicial} - ${b.horaFinal}`
+        })
+        return `${this.diasSemana[a[0]]} ${horarios.join(', ')}. Local: ${a[1][0].local}`
       })
       return horario
     },
@@ -95,11 +98,9 @@ export default {
         this.deleteDisciplina(id)
       })
     },
-    ...mapActions('disciplinas', ['setDisciplinas', 'localizarDisciplinas', 'deleteDisciplina']),
-    ...mapActions('professores', ['setProfessores'])
+    ...mapActions('disciplinas', ['setDisciplinas', 'localizarDisciplinas', 'deleteDisciplina'])
   },
   async mounted () {
-    await this.setProfessores()
     await this.setDisciplinas()
     await this.buscar()
   }

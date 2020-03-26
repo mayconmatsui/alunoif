@@ -1,4 +1,4 @@
-import moment from 'moment'
+// import moment from 'moment'
 
 export const getAulas = (state, getters, rootState, rootGetters) => {
   const aulas = []
@@ -18,19 +18,19 @@ export const getAulas = (state, getters, rootState, rootGetters) => {
 }
 
 export const getAulasWeek = (state, getters, rootState, rootGetters) => {
-  const weekDays = {
-    1: moment().startOf('week').add(1, 'days').format('DD/MM/YYYY'),
-    2: moment().startOf('week').add(2, 'days').format('DD/MM/YYYY'),
-    3: moment().startOf('week').add(3, 'days').format('DD/MM/YYYY'),
-    4: moment().startOf('week').add(4, 'days').format('DD/MM/YYYY'),
-    5: moment().startOf('week').add(5, 'days').format('DD/MM/YYYY'),
-    6: moment().startOf('week').add(6, 'days').format('DD/MM/YYYY')
-  }
+  // const weekDays = {
+  //   1: moment().startOf('week').add(1, 'days').format('DD/MM/YYYY'),
+  //   2: moment().startOf('week').add(2, 'days').format('DD/MM/YYYY'),
+  //   3: moment().startOf('week').add(3, 'days').format('DD/MM/YYYY'),
+  //   4: moment().startOf('week').add(4, 'days').format('DD/MM/YYYY'),
+  //   5: moment().startOf('week').add(5, 'days').format('DD/MM/YYYY'),
+  //   6: moment().startOf('week').add(6, 'days').format('DD/MM/YYYY')
+  // }
 
-  const disciplinas = rootState.disciplinas.disciplinas
-  console.log(weekDays)
-  console.log(state.aulasWeek)
-  console.log(disciplinas)
+  // const disciplinas = rootState.disciplinas.disciplinas
+  // console.log(weekDays)
+  // console.log(state.aulasWeek)
+  // console.log(disciplinas)
 
   // const aulasTab = state.aulasWeek.filter((a) => {
   //   return a.data === weekDays
