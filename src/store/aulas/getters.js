@@ -4,31 +4,41 @@ export const getAulas = (state, getters, rootState, rootGetters) => {
   const aulas = []
 
   state.aulas.map((a) => {
-    const disciplina = rootGetters['disciplinas/getDisciplinaById'](a.disciplina)[0]
     const temp = {
-      nome: disciplina.nome,
+      nome: a.disciplina.nome,
       data: a.data,
-      horarios: a.horarios,
-      local: a.local ? a.local : disciplina.local
+      horarios: a.horarios
     }
     aulas.push(temp)
   })
-
   return aulas
 }
 
 export const getAulasWeek = (state, getters, rootState, rootGetters) => {
   // const weekDays = {
-  //   1: moment().startOf('week').add(1, 'days').format('DD/MM/YYYY'),
-  //   2: moment().startOf('week').add(2, 'days').format('DD/MM/YYYY'),
-  //   3: moment().startOf('week').add(3, 'days').format('DD/MM/YYYY'),
-  //   4: moment().startOf('week').add(4, 'days').format('DD/MM/YYYY'),
-  //   5: moment().startOf('week').add(5, 'days').format('DD/MM/YYYY'),
-  //   6: moment().startOf('week').add(6, 'days').format('DD/MM/YYYY')
+  //   segunda: moment().startOf('week').add(1, 'days').format('DD/MM/YYYY'),
+  //   terca: moment().startOf('week').add(2, 'days').format('DD/MM/YYYY'),
+  //   quarta: moment().startOf('week').add(3, 'days').format('DD/MM/YYYY'),
+  //   quinta: moment().startOf('week').add(4, 'days').format('DD/MM/YYYY'),
+  //   sexta: moment().startOf('week').add(5, 'days').format('DD/MM/YYYY'),
+  //   sabado: moment().startOf('week').add(6, 'days').format('DD/MM/YYYY')
   // }
 
-  // const disciplinas = rootState.disciplinas.disciplinas
-  // console.log(weekDays)
+  const disciplinas = rootState.disciplinas.disciplinas
+  const segunda = disciplinas.filter((disciplina) => {
+    // const horas = disciplina.horarios[1].filter((a) => {
+    //   return a[0] === '1'
+    // })
+    //
+    // console.log(Object.assign({ horarios: Object.fromEntries(horas) }, disciplina))
+    return disciplina.horarios[1]
+  })
+
+  console.log(segunda)
+  // disciplinas.map((a) => {
+  //   console.log(a.horarios)
+  // })
+  // console.log(disciplinas)
   // console.log(state.aulasWeek)
   // console.log(disciplinas)
 

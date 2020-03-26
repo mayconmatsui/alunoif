@@ -9,10 +9,9 @@
       <div v-for="iten in aulasFiltradas" :key="iten.id">
         <q-item>
           <q-item-section>
-            <q-item-label>{{iten.nome}}</q-item-label>
-            <q-item-label caption>{{iten.local}}</q-item-label>
+            <q-item-label>{{iten.disciplina.nome}}</q-item-label>
             <q-item-label caption>{{iten.data}}</q-item-label>
-            <q-item-label caption>{{mostrarHorarios(iten.horarios)}}</q-item-label>
+            <q-item-label caption v-for="(hora, index) in mostrarHorarios(iten.horarios)" :key="index">{{hora}}</q-item-label>
           </q-item-section>
           <q-item-section side top>
             <q-btn flat round color="black" icon="more_vert">
@@ -46,7 +45,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   data () {
@@ -56,7 +55,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('aulas', { aulas: 'getAulas' })
+    // ...mapGetters('aulas', { aulas: 'getAulas' })
+    ...mapState('aulas', ['aulas'])
   },
   methods: {
     buscar () {
@@ -83,7 +83,10 @@ export default {
       }
     },
     mostrarHorarios (iten) {
-      return iten.join(' ')
+      const horarios = iten.map((a) => {
+        return `${a.horaInicial} - ${a.horaFinal}. ${a.local}`
+      })
+      return horarios
     },
     deletarRegistro (id) {
       this.$q.dialog({
