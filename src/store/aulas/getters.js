@@ -1,4 +1,5 @@
 // import moment from 'moment'
+// import _ from 'lodash'
 
 export const getAulas = (state, getters, rootState, rootGetters) => {
   const aulas = []
@@ -25,16 +26,29 @@ export const getAulasWeek = (state, getters, rootState, rootGetters) => {
   // }
 
   const disciplinas = rootState.disciplinas.disciplinas
-  const segunda = disciplinas.filter((disciplina) => {
-    // const horas = disciplina.horarios[1].filter((a) => {
-    //   return a[0] === '1'
-    // })
-    //
-    // console.log(Object.assign({ horarios: Object.fromEntries(horas) }, disciplina))
-    return disciplina.horarios[1]
-  })
 
-  console.log(segunda)
+  function getDisciplinasByWeekDay (disciplinas, dia) {
+    return disciplinas.filter((disciplina) => {
+      return disciplina.horarios[dia]
+    })
+  }
+
+  function removeOutersDay (disciplinas, dia) {
+    const horas = disciplinas.map((a) => {
+      return a.horarios[dia]
+    })
+
+    const horarios = {
+      [dia]: horas
+    }
+
+    return Object.assign(horarios, disciplinas)
+  }
+
+  const quinta = getDisciplinasByWeekDay(disciplinas, 4)
+
+  console.log(removeOutersDay(quinta, 4))
+  // console.log(quinta)
   // disciplinas.map((a) => {
   //   console.log(a.horarios)
   // })
