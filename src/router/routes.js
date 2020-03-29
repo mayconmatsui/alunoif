@@ -15,6 +15,10 @@ const routes = [
       { path: 'professores/:id/editar', component: () => import('components/FormProfessor.vue') }
 
     ]
+  },
+  {
+    path: '/auth',
+    component: () => import('layouts/MyAuth.vue')
   }
 ]
 

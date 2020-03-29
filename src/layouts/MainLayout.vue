@@ -28,8 +28,8 @@
         <q-avatar class="absolute" size="60px" style="top: 15px; left: 15px">
           <img src="https://cdn.quasar.dev/img/avatar.png">
         </q-avatar>
-        <div class="absolute text-weight-bold text-white" style="top: 85px; left: 15px">Razvan Stoenescu</div>
-        <div class="absolute text-white" style="top: 100px; left: 15px">@rstoenescu</div>
+        <div class="absolute text-weight-bold text-white" style="top: 85px; left: 15px">{{ user.nome }}</div>
+        <div class="absolute text-white" style="top: 100px; left: 15px">{{ user.email }}</div>
       </div>
       <q-list padding class="text-grey-10">
       <q-item
@@ -118,18 +118,26 @@
 
         <q-item-section>Configurações</q-item-section>
       </q-item>
+
+      <q-item clickable @click="logout">
+        <q-item-section avatar>
+          <q-icon name="exit_to_app" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>Sair</q-item-label>
+        </q-item-section>
+      </q-item>
     </q-list>
     </q-drawer>
 
     <q-page-container>
-      <transition name="fade">
-        <router-view />
-      </transition>
+      <router-view />
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'MainLayout',
@@ -139,8 +147,12 @@ export default {
       link: 'home'
     }
   },
+  methods: {
+    ...mapActions('auth', ['logout'])
+  },
   computed: {
-    elevated: vm => vm.$route.path !== '/'
+    elevated: vm => vm.$route.path !== '/',
+    ...mapState('auth', { user: 'userData' })
   }
 }
 </script>

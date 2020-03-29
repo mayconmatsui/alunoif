@@ -5,6 +5,8 @@ import { vuexfireMutations } from 'vuexfire'
 import disciplinas from './disciplinas'
 import professores from './professores'
 import aulas from './aulas'
+import usuario from './usuario'
+import auth from './auth'
 
 Vue.use(Vuex)
 
@@ -22,7 +24,9 @@ export default function (/* { ssrContext } */) {
     modules: {
       disciplinas,
       professores,
-      aulas
+      aulas,
+      usuario,
+      auth
     },
     mutations: {
       ...vuexfireMutations

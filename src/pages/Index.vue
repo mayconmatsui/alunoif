@@ -21,13 +21,15 @@
       class="q-mt-sm"
     >
       <q-tab-panel
-      v-for="day in week"
-      :key="day.id"
-      :name="nameTab"
+      v-for="(aulas, index) in aulasWeek"
+      :key="aulas.id"
+      :name="daysWeek[index]"
       class="q-pa-sm">
-        <div class="row q-col-gutter-sm">
+        <div class="row q-col-gutter-sm" v-if="aulas.length > 0">
           <div
             class="col-xs-12 col-sm-6 col-lg-3"
+            v-for="(aula, id) in aulas"
+            :key="id"
           >
             <q-card class="my-card">
               <q-card-section
@@ -40,7 +42,10 @@
               <q-separator />
 
               <q-card-section>
-                <div class="row items-center">
+                <div class="row items-center"
+                  v-for="(hora, ids) in aula.horarios"
+                  :key="ids"
+                  >
                   <div
                     class="col-8 text-grey-9 text-caption text-weight-medium no-wrap items-center"
                   >
@@ -49,7 +54,7 @@
                       name="query_builder"
                       class="q-mr-sm text-weight-medium"
                     />
-                    18:50 - 19:35
+                    {{ hora.horaInicial }} - {{ hora.horaFinal }}
                   </div>
                   <div
                     class="col-4 text-grey-9 text-caption text-weight-medium no-wrap items-center"
@@ -59,29 +64,7 @@
                       name="location_on"
                       class="q-mr-sm text-weight-medium"
                     />
-                    LAB 1
-                  </div>
-                </div>
-                <div class="row no-wrap items-center">
-                  <div
-                    class="col-8 text-grey-9 text-caption text-weight-medium no-wrap items-center"
-                  >
-                    <q-icon
-                      size="15px"
-                      name="query_builder"
-                      class="q-mr-sm text-weight-medium"
-                    />
-                    18:50 - 19:35
-                  </div>
-                  <div
-                    class="col-4 text-grey-9 text-caption text-weight-medium no-wrap items-center"
-                  >
-                    <q-icon
-                      size="15px"
-                      name="location_on"
-                      class="q-mr-sm text-weight-medium"
-                    />
-                    LAB 1
+                    {{ hora.local }}
                   </div>
                 </div>
               </q-card-section>
@@ -90,12 +73,17 @@
 
               <q-card-section class="row text-center q-py-sm">
                 <div class="text-caption text-weight-medium col-12">
-                  {{ aula.professor }}
+                  {{ aula.professor.nome }}
                 </div>
               </q-card-section>
             </q-card>
           </div>
         </div>
+        <q-list bordered v-else>
+          <q-item>
+            <q-item-section class="text-weight-medium text-grey-9 text-center">Nenhuma aula</q-item-section>
+          </q-item>
+        </q-list>
       </q-tab-panel>
     </q-tab-panels>
   </q-page>
@@ -103,14 +91,15 @@
 
 <script>
 import _ from 'lodash'
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import moment from 'moment'
+import { QSpinner } from 'quasar'
 
 export default {
   name: 'PageIndex',
   data () {
     return {
-      tab: '',
+      tab: 'seg',
       nameTab: '',
       colors: [
         'bg-positive',
@@ -128,8 +117,7 @@ export default {
         4: 'qui',
         5: 'sex',
         6: 'sab'
-      },
-      week: []
+      }
     }
   },
   methods: {
@@ -138,24 +126,22 @@ export default {
       this.tab = this.daysWeek[today]
       this.nameTab = this.tab
     },
-    async getItensTab () {
+    getItensTab () {
       this.nameTab = this.tab
-      this.aulas = this.aulasTab
     },
     getBackgroundColor () {
       return _.sample(this.colors)
     },
-    ...mapActions('aulas', ['setAulasWeek']),
-    ...mapActions('disciplinas', ['setDisciplinas'])
+    ...mapActions('usuario', ['setDisciplinasUser'])
   },
   computed: {
-    ...mapGetters('aulas', { aulasTab: 'getAulasWeek' })
+    ...mapGetters('usuario', { aulasWeek: 'getAulasUserWeek' })
   },
   async mounted () {
     await this.setTabDay()
-    await this.setDisciplinas()
-    await this.setAulasWeek()
-    await this.getItensTab()
+    await setTimeout(() => {
+      this.setDisciplinasUser()
+    }, 200)
   }
 }
 </script>
