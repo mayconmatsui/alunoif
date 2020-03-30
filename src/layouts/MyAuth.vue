@@ -162,6 +162,7 @@
 
 <script>
 import { openURL } from 'quasar'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'MyAuth',
@@ -198,36 +199,39 @@ export default {
       this.telaCadastro = false
       this.telaRecuperar = true
     },
-    efetuarLogin () {
-      const self = this
+    async efetuarLogin () {
+      // const self = this
       const { email, senha } = this
       if (email !== '' && senha !== '') {
-        this.$auth.signInWithEmailAndPassword(
-          email, senha
-        ).catch(function (error) {
-          if (error.code === 'auth/invalid-email') {
-            self.$q.notify({
-              color: 'red-5',
-              textColor: 'white',
-              icon: 'fas fa-check-circle',
-              message: 'Email inválido.'
-            })
-          } else {
-            self.$q.notify({
-              color: 'red-5',
-              textColor: 'white',
-              icon: 'fas fa-check-circle',
-              message: 'Usuário ou senha inválidos.'
-            })
-          }
-        })
-      } else {
-        self.$q.notify({
-          color: 'red-5',
-          textColor: 'white',
-          icon: 'fas fa-check-circle',
-          message: 'Preencha todos os campos corretamente.'
-        })
+        await this.login({ email, senha })
+
+        await console.log(this.error)
+      //   this.$auth.signInWithEmailAndPassword(
+      //     email, senha
+      //   ).catch(function (error) {
+      //     if (error.code === 'auth/invalid-email') {
+      //       self.$q.notify({
+      //         color: 'red-5',
+      //         textColor: 'white',
+      //         icon: 'fas fa-check-circle',
+      //         message: 'Email inválido.'
+      //       })
+      //     } else {
+      //       self.$q.notify({
+      //         color: 'red-5',
+      //         textColor: 'white',
+      //         icon: 'fas fa-check-circle',
+      //         message: 'Usuário ou senha inválidos.'
+      //       })
+      //     }
+      //   })
+      // } else {
+      //   self.$q.notify({
+      //     color: 'red-5',
+      //     textColor: 'white',
+      //     icon: 'fas fa-check-circle',
+      //     message: 'Preencha todos os campos corretamente.'
+      //   })
       }
     },
     onSubmit () {
@@ -330,12 +334,17 @@ export default {
         }
       })
     },
-    openURL
+    openURL,
+    ...mapActions('auth', ['login', 'logout', 'setUser'])
   },
   computed: {
     isValid () {
       return this.senha === this.resenha
-    }
+    },
+    ...mapGetters('auth', {
+      error: 'getError',
+      isLoggedIn: 'getLoginState'
+    })
   },
   mounted () {
     this.$auth.onAuthStateChanged(user => {

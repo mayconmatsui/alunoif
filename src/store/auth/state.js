@@ -1,9 +1,7 @@
 export default function () {
   return {
-    userData: {
-      nome: '',
-      email: ''
-    },
-    isLoggedIn: false
+    user: null,
+    isLoggedIn: false,
+    error: null
   }
 }

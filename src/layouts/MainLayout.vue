@@ -152,7 +152,12 @@ export default {
   },
   computed: {
     elevated: vm => vm.$route.path !== '/',
-    ...mapState('auth', { user: 'userData' })
+    ...mapState('auth', ['isLoggedIn'])
+  },
+  created () {
+    if (!this.isLoggedIn) {
+      this.$router.push({ path: '/auth' }).catch(err => { console.log(err) })
+    }
   }
 }
 </script>

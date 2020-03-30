@@ -93,7 +93,7 @@
 import _ from 'lodash'
 import { mapActions, mapGetters } from 'vuex'
 import moment from 'moment'
-import { QSpinner } from 'quasar'
+// import { QSpinner } from 'quasar'
 
 export default {
   name: 'PageIndex',

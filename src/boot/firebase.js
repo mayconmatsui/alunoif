@@ -30,16 +30,6 @@ const FIREBASE = firebase
 const FSQL = new FireSQL(DBFS)
 
 export default ({ app, router, Vue, store }) => {
-  AUTH.onAuthStateChanged(user => {
-    if (!user) {
-      store.commit('auth/setLoginState', false)
-      router.push({ path: '/auth' })
-    } else {
-      store.commit('auth/setLoginState', true)
-      store.dispatch('auth/setUserData', user.uid)
-    }
-  })
-
   Object.defineProperties(Vue.prototype, {
     $db: {
       get () {
