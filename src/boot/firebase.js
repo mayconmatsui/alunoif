@@ -30,6 +30,12 @@ const FIREBASE = firebase
 const FSQL = new FireSQL(DBFS)
 
 export default ({ app, router, Vue, store }) => {
+  AUTH.onAuthStateChanged(user => {
+    if (!user) {
+      router.push({ path: '/auth' }).catch(err => { console.log(err) })
+    }
+  })
+
   Object.defineProperties(Vue.prototype, {
     $db: {
       get () {

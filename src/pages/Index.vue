@@ -14,6 +14,7 @@
       <q-tab name="sab" label="Sáb" />
     </q-tabs>
     <q-tab-panels
+      v-if="aulasWeek"
       v-model="tab"
       animated
       transition-prev="slide-right"
@@ -96,7 +97,6 @@ import moment from 'moment'
 // import { QSpinner } from 'quasar'
 
 export default {
-  name: 'PageIndex',
   data () {
     return {
       tab: 'seg',
@@ -122,9 +122,11 @@ export default {
   },
   methods: {
     setTabDay () {
-      const today = moment().day()
-      this.tab = this.daysWeek[today]
-      this.nameTab = this.tab
+      setTimeout(() => {
+        const today = moment().day()
+        this.tab = this.daysWeek[today]
+        this.nameTab = this.tab
+      }, 500)
     },
     getItensTab () {
       this.nameTab = this.tab
@@ -139,9 +141,6 @@ export default {
   },
   async mounted () {
     await this.setTabDay()
-    await setTimeout(() => {
-      this.setDisciplinasUser()
-    }, 200)
   }
 }
 </script>

@@ -1,3 +1,3 @@
-export const setDisciplinasUser = ({ commit, rootState }) => {
-  commit('setDisciplinasUser', rootState.auth.userData.disciplinas)
-}
+// export const setDisciplinasUser = async ({ commit, rootState }) => {
+//   commit('setDisciplinasUser', await rootState.auth.user.disciplinas)
+// }

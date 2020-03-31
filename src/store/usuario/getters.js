@@ -1,4 +1,5 @@
-export const getAulasUserWeek = (state) => {
+export const getAulasUserWeek = (state, getters, rootState, rootGetters) => {
+  console.log(rootGetters)
   /****************
   disciplinas por dia da semana
   1 => segunda
@@ -18,8 +19,10 @@ export const getAulasUserWeek = (state) => {
     6: []
   }
 
+  // const user = rootGetters
+
   // Sepando aulas por dia da semana
-  state.disciplinasUser.map((disciplina) => {
+  rootState.auth.user.disciplinas.map((disciplina) => {
     // segunda
     if (disciplina.horarios[1]) {
       disciplinas[1].push(disciplina)

@@ -24,13 +24,7 @@
       show-if-above
       content-class="bg-grey-1"
     >
-      <div class="bg-positive" style="height: 130px">
-        <q-avatar class="absolute" size="60px" style="top: 15px; left: 15px">
-          <img src="https://cdn.quasar.dev/img/avatar.png">
-        </q-avatar>
-        <div class="absolute text-weight-bold text-white" style="top: 85px; left: 15px">{{ user.nome }}</div>
-        <div class="absolute text-white" style="top: 100px; left: 15px">{{ user.email }}</div>
-      </div>
+      <avatar v-if="user" :user="user"/>
       <q-list padding class="text-grey-10">
       <q-item
         to="/"
@@ -56,7 +50,7 @@
         active-class="my-menu-link"
       >
         <q-item-section avatar>
-          <q-icon name="class" />
+          <q-icon name="class" null/>
         </q-item-section>
 
         <q-item-section>Disciplinas</q-item-section>
@@ -137,10 +131,12 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+import avatar from '../components/Avatar'
 
 export default {
   name: 'MainLayout',
+  components: { avatar },
   data () {
     return {
       leftDrawerOpen: false,
@@ -152,12 +148,17 @@ export default {
   },
   computed: {
     elevated: vm => vm.$route.path !== '/',
-    ...mapState('auth', ['isLoggedIn'])
+    ...mapGetters('auth', {
+      isLoggedIn: 'getLoginState',
+      user: 'getUser'
+    })
   },
-  created () {
-    if (!this.isLoggedIn) {
-      this.$router.push({ path: '/auth' }).catch(err => { console.log(err) })
-    }
+  async mounted () {
+    await this.$auth.onAuthStateChanged(user => {
+      if (!user) {
+        this.$router.push({ path: '/auth' })
+      }
+    })
   }
 }
 </script>

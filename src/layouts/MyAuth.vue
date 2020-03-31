@@ -200,38 +200,27 @@ export default {
       this.telaRecuperar = true
     },
     async efetuarLogin () {
-      // const self = this
       const { email, senha } = this
       if (email !== '' && senha !== '') {
         await this.login({ email, senha })
 
-        await console.log(this.error)
-      //   this.$auth.signInWithEmailAndPassword(
-      //     email, senha
-      //   ).catch(function (error) {
-      //     if (error.code === 'auth/invalid-email') {
-      //       self.$q.notify({
-      //         color: 'red-5',
-      //         textColor: 'white',
-      //         icon: 'fas fa-check-circle',
-      //         message: 'Email inválido.'
-      //       })
-      //     } else {
-      //       self.$q.notify({
-      //         color: 'red-5',
-      //         textColor: 'white',
-      //         icon: 'fas fa-check-circle',
-      //         message: 'Usuário ou senha inválidos.'
-      //       })
-      //     }
-      //   })
-      // } else {
-      //   self.$q.notify({
-      //     color: 'red-5',
-      //     textColor: 'white',
-      //     icon: 'fas fa-check-circle',
-      //     message: 'Preencha todos os campos corretamente.'
-      //   })
+        if (this.error) {
+          if (this.error.code === 'auth/invalid-email') {
+            this.$q.notify({
+              color: 'red-5',
+              textColor: 'white',
+              icon: 'fas fa-check-circle',
+              message: 'Email inválido.'
+            })
+          } else {
+            this.$q.notify({
+              color: 'red-5',
+              textColor: 'white',
+              icon: 'fas fa-check-circle',
+              message: 'Usuário ou senha inválidos.'
+            })
+          }
+        }
       }
     },
     onSubmit () {
@@ -335,7 +324,7 @@ export default {
       })
     },
     openURL,
-    ...mapActions('auth', ['login', 'logout', 'setUser'])
+    ...mapActions('auth', ['login', 'logout'])
   },
   computed: {
     isValid () {
