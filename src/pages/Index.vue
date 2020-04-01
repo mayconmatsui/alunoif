@@ -14,7 +14,6 @@
       <q-tab name="sab" label="Sáb" />
     </q-tabs>
     <q-tab-panels
-      v-if="aulasWeek.length > 0"
       v-model="tab"
       animated
       transition-prev="slide-right"
@@ -139,8 +138,6 @@ export default {
   },
   async mounted () {
     await this.setTabDay()
-    await this.setAulasUserWeek()
-    await console.log(this.aulasWeek)
   }
 }
 </script>

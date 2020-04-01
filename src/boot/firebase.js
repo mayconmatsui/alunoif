@@ -29,10 +29,13 @@ const DBST = connection.storage()
 const FIREBASE = firebase
 const FSQL = new FireSQL(DBFS)
 
-export default ({ app, router, Vue, store }) => {
-  AUTH.onAuthStateChanged(user => {
+export default async ({ app, router, Vue, store }) => {
+  await AUTH.onAuthStateChanged(async user => {
     if (!user) {
-      router.push({ path: '/auth' }).catch(err => { console.log(err) })
+      await router.push({ path: '/auth' }).catch(err => { console.log(err) })
+    } else {
+      await store.dispatch('auth/setUser', user.uid)
+      await store.dispatch('auth/setAulasUserWeek')
     }
   })
 
