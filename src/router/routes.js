@@ -13,7 +13,6 @@ const routes = [
       { path: 'professores', component: () => import('pages/Professores.vue') },
       { path: 'professores/cadastrar', component: () => import('components/FormProfessor.vue') },
       { path: 'professores/:id/editar', component: () => import('components/FormProfessor.vue') }
-
     ]
   },
   {

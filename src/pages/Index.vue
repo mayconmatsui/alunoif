@@ -14,7 +14,7 @@
       <q-tab name="sab" label="Sáb" />
     </q-tabs>
     <q-tab-panels
-      v-if="aulasWeek"
+      v-if="aulasWeek.length > 0"
       v-model="tab"
       animated
       transition-prev="slide-right"
@@ -122,11 +122,9 @@ export default {
   },
   methods: {
     setTabDay () {
-      setTimeout(() => {
-        const today = moment().day()
-        this.tab = this.daysWeek[today]
-        this.nameTab = this.tab
-      }, 500)
+      const today = moment().day()
+      this.tab = this.daysWeek[today]
+      this.nameTab = this.tab
     },
     getItensTab () {
       this.nameTab = this.tab
@@ -134,13 +132,15 @@ export default {
     getBackgroundColor () {
       return _.sample(this.colors)
     },
-    ...mapActions('usuario', ['setDisciplinasUser'])
+    ...mapActions('auth', ['setAulasUserWeek'])
   },
   computed: {
-    ...mapGetters('usuario', { aulasWeek: 'getAulasUserWeek' })
+    ...mapGetters('auth', { aulasWeek: 'getAulasUserWeek' })
   },
   async mounted () {
     await this.setTabDay()
+    await this.setAulasUserWeek()
+    await console.log(this.aulasWeek)
   }
 }
 </script>

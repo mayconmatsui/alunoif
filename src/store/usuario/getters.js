@@ -1,5 +1,4 @@
 export const getAulasUserWeek = (state, getters, rootState, rootGetters) => {
-  console.log(rootGetters)
   /****************
   disciplinas por dia da semana
   1 => segunda

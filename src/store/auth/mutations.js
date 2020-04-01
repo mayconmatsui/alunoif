@@ -9,3 +9,7 @@ export function setLoginState (state, val) {
 export function setError (state, val) {
   state.error = val
 }
+
+export function setAulasUser (state, val) {
+  state.aulasUser = val
+}

@@ -9,3 +9,7 @@ export const getLoginState = state => {
 export const getError = state => {
   return state.error
 }
+
+export const getAulasUserWeek = state => {
+  return state.aulasUser
+}

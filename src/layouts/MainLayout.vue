@@ -153,8 +153,8 @@ export default {
       user: 'getUser'
     })
   },
-  async mounted () {
-    await this.$auth.onAuthStateChanged(user => {
+  mounted () {
+    this.$auth.onAuthStateChanged(user => {
       if (!user) {
         this.$router.push({ path: '/auth' })
       }
